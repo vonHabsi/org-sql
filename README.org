@@ -218,6 +218,15 @@ In the future, this will have one row for each timestamp under a headline. For n
 | resolution          | text    | /minute/ if timestamp specifies hours/minutes, else /day/ |
 | resolution_end      | text    | like *resolution* but for the end if this is a range       |
 
+** Debugging
+=org-sql= runs its operations in transactions and sometimes there is not enough detailed output to indicate what went wrong.
+
+There are two ways of checking this problem.
+
+The first step is execute the command =(setq org-sql-debug t)=. This will send debugging messages to the Messages buffer in emacs for you see what is happening. It may not give much detail, but may be enough to point you to the error.
+
+
+
 NOTES: 
 - Inactive-range and active-range will not appear in the *type* column. Use *time_end* instead to determine if the timestamp is a ranged timestamp
 - There is no distinction in this table alone between planning timestamps that are part of the planning section (eg =CLOSED: [whatever]=) and those from logbook entries that pertain to planning changes (eg =Removed deadline, was [whatever]=). This distinction requires joining the =planning_changes= table, which will only reference logbook planning change timestamps.
