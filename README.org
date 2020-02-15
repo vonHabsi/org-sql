@@ -219,13 +219,20 @@ In the future, this will have one row for each timestamp under a headline. For n
 | resolution_end      | text    | like *resolution* but for the end if this is a range       |
 
 ** Debugging
-=org-sql= runs its operations in transactions and sometimes there is not enough detailed output to indicate what went wrong.
+=org-sql= runs its operations in transactions and when this fails there usually isn't enough information to indicate what went wrong and why.
 
-There are two ways of checking this problem.
+The built-in method in =org-sql= is to switch on debug messages by adding the command =(setq org-sql-debug t)= to the configuration or executing it in the minibuffer. Note that as of now this will only print errors at the bulk transaction level, and it won't print anything if the transaction hangs. Below is an example of its output when an error occurred with `org-sql-user-update`
 
-The first step is execute the command =(setq org-sql-debug t)=. This will send debugging messages to the Messages buffer in emacs for you see what is happening. It may not give much detail, but may be enough to point you to the error.
-
-
+*(org-sql-user-update)*
+```
+Updating Org SQL database
+Debug output for org-sql update
+DELETE transactions: Not run
+UPDATE transactions: Not run
+INSERT transactions: Error: UNIQUE constraint failed: tags.file_path, tags.headline_offset, tags.tag, tags.inherited
+Org SQL update complete
+"Org SQL update complete"
+```
 
 NOTES: 
 - Inactive-range and active-range will not appear in the *type* column. Use *time_end* instead to determine if the timestamp is a ranged timestamp
