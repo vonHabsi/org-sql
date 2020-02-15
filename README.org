@@ -219,12 +219,11 @@ In the future, this will have one row for each timestamp under a headline. For n
 | resolution_end      | text    | like *resolution* but for the end if this is a range       |
 
 ** Debugging
-=org-sql= runs its operations in transactions and when this fails there usually isn't enough information to indicate what went wrong and why.
+=org-sql= runs its operations in transactions and when that fails there isn't enough information to indicate what went wrong and why.
 
-The built-in method in =org-sql= is to switch on debug messages by adding the command =(setq org-sql-debug t)= to the configuration or executing it in the minibuffer. Note that as of now this will only print errors at the bulk transaction level, and it won't print anything if the transaction hangs. Below is an example of its output when an error occurred with `org-sql-user-update`
+The built-in method in =org-sql= is to switch on debug messages by adding the command =(setq org-sql-debug t)= to the configuration or executing it in the minibuffer. Note that as of now this will only print errors at the bulk transaction level, and it won't print anything if the transaction hangs. Below is an example of its output when an error occurred with =org-sql-user-update=
 
-*(org-sql-user-update)*
-```
+#+BEGIN_EXAMPLE
 Updating Org SQL database
 Debug output for org-sql update
 DELETE transactions: Not run
@@ -232,9 +231,11 @@ UPDATE transactions: Not run
 INSERT transactions: Error: UNIQUE constraint failed: tags.file_path, tags.headline_offset, tags.tag, tags.inherited
 Org SQL update complete
 "Org SQL update complete"
-```
+#+END_EXAMPLE
 
-NOTES: 
+The UNIQUE constraint error in the example above was caused by tag occurring twice in a headline. The other field values were the identical for that line and attempting the same tag again caused the error.
+
+** NOTES: 
 - Inactive-range and active-range will not appear in the *type* column. Use *time_end* instead to determine if the timestamp is a ranged timestamp
 - There is no distinction in this table alone between planning timestamps that are part of the planning section (eg =CLOSED: [whatever]=) and those from logbook entries that pertain to planning changes (eg =Removed deadline, was [whatever]=). This distinction requires joining the =planning_changes= table, which will only reference logbook planning change timestamps.
 ** Contributions
